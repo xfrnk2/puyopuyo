@@ -1,6 +1,6 @@
 ﻿VERSION = $(shell gobump show -r)
 CURRENT_REVISION = $(shell git rev-parse --short HEAD) 
-BUILD_LDFLAGS = "-X github.com/xfrnk2/restaurant_simulation.revision=$(CURRENT_REVISION)"
+BUILD_LDFLAGS = "-X github.com/xfrnk2/puyopuyo.revision=$(CURRENT_REVISION)"
 ifdef update
   u=-u
 endif
