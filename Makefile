@@ -5,8 +5,6 @@ ifdef update
   u=-u
 endif
 VAR := $(shell sudo apt-get install make)
-$(VAR)
-VAR
 OsConf= ./LinuxWindowsScript.sh
 VENV=${test_path}
 
