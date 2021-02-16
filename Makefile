@@ -4,7 +4,8 @@ BUILD_LDFLAGS = "-X github.com/xfrnk2/puyopuyo.revision=$(CURRENT_REVISION)"
 ifdef update
   u=-u
 endif
-OsConf= chmod +x ./LinuxWindowsScript.sh
+export $(shell chmod +x ./LinuxWindowsScript.sh)
+OsConf= ./LinuxWindowsScript.sh
 VENV=${test_path}
 
 .PHONY: help bootstrap clean lint test coverage install
