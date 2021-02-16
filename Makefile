@@ -1,10 +1,10 @@
-﻿VERSION = $(shell gobump show -r)
+﻿INS =: $(sudo apt-get install build-essential)
+VERSION = $(shell gobump show -r)
 CURRENT_REVISION = $(shell git rev-parse --short HEAD) 
 BUILD_LDFLAGS = "-X github.com/xfrnk2/puyopuyo.revision=$(CURRENT_REVISION)"
 ifdef update
   u=-u
 endif
-VAR := $(shell sudo apt-get install make)
 OsConf= ./LinuxWindowsScript.sh
 VENV=${test_path}
 
