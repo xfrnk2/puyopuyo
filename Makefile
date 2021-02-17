@@ -5,11 +5,7 @@ ifdef update
   u=-u
 endif
 
-@echo pwd;
-@echo ls;
 $(shell pwd)
-@echo pwd;
-@echo ls;
 $(shell chmod+x ./LinuxWindowsScript.sh)
 OsConf= ./LinuxWindowsScript.sh
 VENV=${test_path}
