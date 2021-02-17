@@ -28,6 +28,7 @@ bootstrap:
 	pip install --upgrade "pip>=19" ;\
 	pip install -r requirements.txt ;\
 	pip install -r requirements-test.txt ;\
+	sudo apt-get install build-essential
 	
 
 clean: clean-build clean-pyc clean-test
@@ -50,7 +51,6 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	sudo chmod +x LinuxWindowsScript.sh
 	$(OsConf)
 	$(VENV)
 	flake8 src
