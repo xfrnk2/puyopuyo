@@ -50,8 +50,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	pwd
-	ls -l
+	chmod +x ./LinuxWindowsScript.sh
 	$(OsConf)
 	$(VENV)
 	flake8 src
