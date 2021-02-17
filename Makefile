@@ -5,8 +5,6 @@ ifdef update
   u=-u
 endif
 
-$(shell pwd)
-$(shell chmod+x ./LinuxWindowsScript.sh)
 OsConf= ./LinuxWindowsScript.sh
 VENV=${test_path}
 
@@ -52,6 +50,8 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
+	pwd
+	ls -l
 	$(OsConf)
 	$(VENV)
 	flake8 src
