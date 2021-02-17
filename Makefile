@@ -5,7 +5,7 @@ ifdef update
   u=-u
 endif
 current_dir = $(shell pwd)
-OsConf= $(current_dir)./LinuxWindowsScript.sh
+OsConf= $(/LinuxWindowsScript.sh ; current_dir)
 VENV=${test_path}
 
 .PHONY: help bootstrap clean lint test coverage install
