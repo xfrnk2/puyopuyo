@@ -7,6 +7,10 @@
 ```
 Python 3.7+
 ```
+#### Install
+```
+pip install pynput
+```
 #### Execution
 ```
 python src/main.py
