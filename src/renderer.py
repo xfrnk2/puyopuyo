@@ -1,5 +1,6 @@
-from src.timer import Timer
 import os
+
+FREQUENCY_PER_SECOND = 5
 
 # Windows
 if os.name == 'nt':
@@ -14,28 +15,39 @@ else:
 
 class Renderer:
 
-    def __init__(self):
-        self.accumulated_elapsed_time = Timer.get_elapsed()
-        self.prev_tick = 0.0
-        self.fps = 0
-        self.fps_count = 0
-        self.field = None
+    def __init__(self, frequency=FREQUENCY_PER_SECOND):
+        self.__frequency = frequency
+        self.__elapsed_time = 0.0
+        self.__fps = 0
+        self.__fps_count = 0
+        self.__field = None
 
-    def renderable(self) -> bool:
-        elapsed_time = Timer.get_elapsed()
-        self.accumulated_elapsed_time += elapsed_time
-        self.prev_tick += elapsed_time
+    @property
+    def elapsed_time(self):
+        return self.__elapsed_time
 
-        if self.accumulated_elapsed_time < 0.2:
-            return False
+    def renderable(self):
+        return not self.__elapsed_time < 1.0 / self.__frequency
 
-        self.accumulated_elapsed_time = 0.0
-        self.fps_count += 1
+    # 테스트할 것
 
-        if self.prev_tick > 1.0:
-            self.fps, self.fps_count = self.fps_count, 0
-            self.prev_tick -= 1.0
+    def update(self, time):
+        self.__elapsed_time += time
+        if not self.renderable():
+            return
+        self.__fps_count += 1
+        self.__elapsed_time = 0.0
 
+    # update 1회 후 self.__elapsed_time이 이전 elapsed_time을 초과하는지 test
+
+    def set_field(self, field):
+        self.__field = field
+
+    def render(self):
+
+        print(self.__field)
+        print(f"FPS : {self.__fps}")
         clear()
-        return True
 
+        if self.__frequency <= self.__fps_count:
+            self.__fps, self.__fps_count = self.__fps_count, 0

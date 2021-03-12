@@ -1,40 +1,30 @@
-from src.renderer import Renderer
 from dataclasses import dataclass
-from pytest import fixture
 
-@fixture
-def Case1():
-    mock = Renderer()
-    mock.fps_count = 4
-    mock.accumulated_elapsed_time = 0.5
-    mock.prev_tick = 1.1
-    return mock
+from src.renderer import Renderer
 
-@fixture
-def Case2():
-    mock = Renderer()
-    mock.accumulated_elapsed_time = 0.1
-    return mock
-
-@fixture
-def Case3():
-    mock = Renderer()
-    mock.fps_count = 1
-    mock.accumulated_elapsed_time = 0.3
-    return mock
+FREQUENCY_PER_SECOND = 5
 
 
-def test_renderable1(Case1):
-    expected = Case1.renderable()
-    assert expected == True
-    assert Case1.fps_count == 0 and Case1.fps == 5
-    assert Case1.prev_tick <= 1.0
+@dataclass
+class RendererTestCase:
+    time: float
+    expected: bool
 
-def test_renderable2(Case2):
-    expected = Case2.renderable()
-    assert expected == False
 
-def test_renderable3(Case3):
-    expected =Case3.renderable()
-    assert expected == True
-    assert Case3.fps_count == 2
+def test_renderer():
+    '''
+    경과시간을 제대로 반영하는지 테스트
+    '''
+    cases = (
+        RendererTestCase(time=5.0, expected=False),
+        RendererTestCase(time=0.05, expected=True),
+        RendererTestCase(time=0.1, expected=True),
+        RendererTestCase(time=0.2, expected=False)
+    )
+    renderer = Renderer(FREQUENCY_PER_SECOND)
+    for case in cases:
+        prev_elapsed_time = renderer.elapsed_time
+        time, expected = case.time, case.expected
+
+        renderer.update(time)
+        assert (prev_elapsed_time < renderer.elapsed_time) == expected
