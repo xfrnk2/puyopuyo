@@ -6,10 +6,12 @@
 #### Requirement
 ```
 Python 3.7+
+Make
 ```
-#### Install
+#### Test
 ```
-pip install pynput
+make bootstrap
+make test
 ```
 #### Execution
 ```
