@@ -29,8 +29,6 @@ class Renderer:
     def renderable(self):
         return not self.__elapsed_time < 1.0 / self.__frequency
 
-    # 테스트할 것
-
     def update(self, time):
         self.__elapsed_time += time
         if not self.renderable():
@@ -38,7 +36,6 @@ class Renderer:
         self.__fps_count += 1
         self.__elapsed_time = 0.0
 
-    # update 1회 후 self.__elapsed_time이 이전 elapsed_time을 초과하는지 test
 
     def set_field(self, field):
         self.__field = field
