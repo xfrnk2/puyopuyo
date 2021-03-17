@@ -227,3 +227,6 @@ $RECYCLE.BIN/
 
 #Registry file
 *.rej
+
+#venv
+venv

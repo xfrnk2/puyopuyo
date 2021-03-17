@@ -1,7 +1,6 @@
 from __future__ import print_function
 
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 __version__ = '0.0.1'
 name = 'puyopuyo'
@@ -51,6 +50,7 @@ setup(
             'flake8',
             'pyflakes',
             'pep8',
+            'pynput',
         ],
     }
 )
