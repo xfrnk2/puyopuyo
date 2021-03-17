@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from src.logic import Logic
+
 from src.event import Event, MoveDownEvent, MoveLeftEvent, MoveRightEvent
+from src.logic import Logic
 from src.puyo import Puyo
 
 
@@ -23,8 +24,7 @@ def test_event_reflect():
         EventReflectCase(event=MoveLeftEvent, prev_position=(6, 5), expected=(5, 5)),
         EventReflectCase(event=MoveRightEvent, prev_position=(6, 6), expected=(7, 6)),
         EventReflectCase(event=MoveDownEvent, prev_position=(2, 15), expected=(2, 16))
-            )
-
+    )
 
     for case in cases:
         event, prev_position, expected = case.event, case.prev_position, case.expected
@@ -34,12 +34,13 @@ def test_event_reflect():
         result = puyo.reflect_event(event())
         assert result == expected
 
+
 def test_falling():
     logic = Logic()
     cases = (
         FallingCase(time=0.1, expected=True),
         FallingCase(time=0, expected=False)
-            )
+    )
 
     for case in cases:
         time, expected = case.time, case.expected
