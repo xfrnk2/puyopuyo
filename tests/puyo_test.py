@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from src.event import (Event, LeftSpinEvent, MoveDownEvent, MoveLeftEvent,
-                       MoveRightEvent, RightSpinEvent)
+                       MoveRightEvent, RightSpinEvent, VoidEvent)
 from src.logic import Logic
 from src.puyo import Puyo
 
@@ -18,6 +18,12 @@ class FallingCase:
     time: float
     expected: bool
 
+@dataclass
+class UpdateCase:
+    prev_position: tuple
+    time: float
+    event: Event
+    expected: tuple
 
 def test_event_reflect():
     '''
@@ -26,9 +32,9 @@ def test_event_reflect():
     cases = (
         EventReflectCase(event=MoveLeftEvent, prev_position=(6, 5), expected=(5, 5)),
         EventReflectCase(event=MoveRightEvent, prev_position=(6, 6), expected=(7, 6)),
-        EventReflectCase(event=MoveDownEvent, prev_position=(2, 15), expected=(2, 16)),
-        EventReflectCase(event=LeftSpinEvent, prev_position=(5, 10), expected=(4, 11)),
-        EventReflectCase(event=RightSpinEvent, prev_position=(5, 10), expected=(6, 11))
+        EventReflectCase(event=MoveDownEvent, prev_position=(2, 15), expected=(2, 14)),
+        EventReflectCase(event=LeftSpinEvent, prev_position=(5, 10), expected=(4, 9)),
+        EventReflectCase(event=RightSpinEvent, prev_position=(5, 10), expected=(6, 9))
     )
 
     for case in cases:
@@ -53,3 +59,26 @@ def test_falling():
         time, expected = case.time, case.expected
         puyo = Puyo(Logic())
         assert puyo.falling(time) == expected
+
+
+def test_update():
+    '''
+    :경과시간과 조작 이벤트에 따라 좌표값을 잘 반영하는지 테스트:
+    '''
+    cases = (UpdateCase(prev_position=(6, 5), time=0.1, event=LeftSpinEvent, expected=(5, 3)),
+             UpdateCase(prev_position=(3, 3), time=0.0, event=MoveDownEvent, expected=(3, 2)),
+             UpdateCase(prev_position=(7, 5), time=0.3, event=MoveRightEvent, expected=(8, 4)),
+             UpdateCase(prev_position=(2, 19), time=0.2, event=RightSpinEvent, expected=(3, 17)),
+             UpdateCase(prev_position=(3, 0), time=0.2, event=RightSpinEvent, expected=(3, 0)),
+             UpdateCase(prev_position=(0, 0), time=0.2, event=VoidEvent, expected=(0, 0))
+             )
+
+    for case in cases:
+        logic = Logic()
+        logic.update({})
+        puyo = Puyo(logic)
+        puyo.position = case.prev_position
+        print(puyo.position)
+        puyo.update(case.time, case.event())
+        print(puyo.position)
+        assert puyo.position == case.expected
