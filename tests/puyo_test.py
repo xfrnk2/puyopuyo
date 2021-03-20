@@ -18,12 +18,14 @@ class FallingCase:
     time: float
     expected: bool
 
+
 @dataclass
 class UpdateCase:
     prev_position: tuple
     time: float
     event: Event
     expected: tuple
+
 
 def test_event_reflect():
     '''

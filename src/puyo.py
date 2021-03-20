@@ -1,6 +1,8 @@
 from uuid import uuid4
+
+from src.event import (LeftSpinEvent, MoveDownEvent, MoveLeftEvent,
+                       MoveRightEvent, RightSpinEvent, VoidEvent)
 from src.logic import Logic
-from src.event import MoveDownEvent, MoveLeftEvent, MoveRightEvent, VoidEvent, LeftSpinEvent, RightSpinEvent
 
 WIDTH = 12
 HEIGHT = 20

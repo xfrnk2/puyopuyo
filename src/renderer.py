@@ -1,5 +1,7 @@
 import os
+
 from timer import Timer
+
 FREQUENCY_PER_SECOND = 5
 
 # Windows
