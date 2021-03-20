@@ -31,6 +31,9 @@ class RightSpinEvent(Event):
     pass
 
 
+class RoundEvent(Event):
+    pass
+
 class VoidEvent(Event):
     pass
 

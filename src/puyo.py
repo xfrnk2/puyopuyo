@@ -1,9 +1,10 @@
 from uuid import uuid4
 
-from src.event import Event, MoveLeftEvent, MoveRightEvent, MoveDownEvent, VoidEvent, FallEvent
+from src.event import Event, MoveLeftEvent, MoveRightEvent, MoveDownEvent, VoidEvent
 
 WIDTH = 12
 HEIGHT = 20
+
 
 class Puyo:
     def __init__(self, logic, width=WIDTH, height=HEIGHT):
@@ -22,11 +23,12 @@ class Puyo:
 
     @position.setter
     def position(self, coordinates: tuple):
-        self.__x, self.__y = coordinates
+        x, y = coordinates
+        self.__x, self.__y = x, y
 
     def reflect_event(self, event: Event):
-        if isinstance(self, VoidEvent):
-            return
+        if isinstance(event, VoidEvent):
+            return self.position
 
         x, y = self.position
         if isinstance(event, MoveLeftEvent):
@@ -35,6 +37,7 @@ class Puyo:
             x += 1
         elif isinstance(event, MoveDownEvent):
             y += 1
+
         return x, y
 
     def falling(self, time):

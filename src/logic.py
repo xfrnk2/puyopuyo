@@ -28,7 +28,7 @@ class Logic:
     def already_exist(self, puyo, position):
         try:
             x, y = puyo.position
-            return self.__logic[self.__height - y - 1][x] or self.__logic[self.__height - y - 1][x] == puyo
+            return self.__logic[self.__height - y - 1][x] and self.__logic[self.__height - y - 1][x] != puyo
         except IndexError:
             pass
 

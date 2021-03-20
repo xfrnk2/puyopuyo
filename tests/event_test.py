@@ -1,8 +1,11 @@
-import sys
-sys.path.append('C:/Users/rad87/Documents/programming/puyopuyo')
-from src.event import *
 from dataclasses import dataclass
+
 import pyautogui
+
+from src.event import (Event, EventManager, GameExitEvent, LeftSpinEvent,
+                       MoveLeftEvent, MoveRightEvent, RightSpinEvent,
+                       VoidEvent)
+
 
 @dataclass
 class GetEventCase:
@@ -11,8 +14,8 @@ class GetEventCase:
 
 
 def test_event_manager():
-    cases = (GetEventCase(key='z',expected=LeftSpinEvent),
-             GetEventCase(key='left',expected=MoveLeftEvent),
+    cases = (GetEventCase(key='z', expected=LeftSpinEvent),
+             GetEventCase(key='left', expected=MoveLeftEvent),
              GetEventCase(key='right', expected=MoveRightEvent),
              GetEventCase(key='esc', expected=GameExitEvent),
              GetEventCase(key='x', expected=RightSpinEvent),

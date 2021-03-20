@@ -14,7 +14,6 @@ class RendererTestCase:
 def test_renderer():
     '''
     경과시간을 제대로 반영하는지 테스트
-
     '''
     cases = (
         RendererTestCase(time=5.0, expected=False),
