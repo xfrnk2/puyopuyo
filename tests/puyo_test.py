@@ -13,6 +13,12 @@ class EventReflectCase:
     expected: tuple
 
 
+@dataclass
+class FallingCase:
+    time: float
+    expected: bool
+
+
 def test_event_reflect():
     '''
     :조작 이벤트에 따라 변경된 좌표값을 정상적으로 리턴하는지 테스트:
@@ -32,3 +38,18 @@ def test_event_reflect():
         puyo.position = prev_position
         result = puyo.reflect_event(event())
         assert result == expected
+
+
+def test_falling():
+    '''
+    :시간 경과에 따라 정상 낙하하는지 테스트:
+    '''
+    cases = (
+        FallingCase(time=0.1, expected=True),
+        FallingCase(time=0, expected=False)
+    )
+
+    for case in cases:
+        time, expected = case.time, case.expected
+        puyo = Puyo(Logic())
+        assert puyo.falling(time) == expected
