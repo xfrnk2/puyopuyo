@@ -1,5 +1,5 @@
 from uuid import uuid4
-
+from src.logic import Logic
 from src.event import MoveDownEvent, MoveLeftEvent, MoveRightEvent, VoidEvent, LeftSpinEvent, RightSpinEvent
 
 WIDTH = 12
@@ -15,7 +15,11 @@ class Puyo:
         self.__valid = True
         self.__speed = 1
 
-        self.__logic = logic
+        self.__logic: Logic = logic
+
+    @property
+    def logic(self):
+        return self.__logic
 
     @property
     def valid(self):
@@ -23,7 +27,7 @@ class Puyo:
 
     @property
     def position(self):
-        return self.__x, self.__y
+        return int(self.__x), int(self.__y)
 
     @position.setter
     def position(self, coordinates):
@@ -32,21 +36,21 @@ class Puyo:
 
     def reflect_event(self, event):
         if isinstance(event, VoidEvent):
-            return self.position
+            return
+        x, y = self.__x, self.__y
 
-        x, y = self.position
         if isinstance(event, MoveLeftEvent):
             x -= 1
         elif isinstance(event, MoveRightEvent):
             x += 1
         elif isinstance(event, MoveDownEvent):
-            y += 1
-        elif isinstance(event, LeftSpinEvent):
+            y -= 1
+        if isinstance(event, LeftSpinEvent):
             x -= 1
-            y += 1
+            y -= 1
         elif isinstance(event, RightSpinEvent):
             x += 1
-            y += 1
+            y -= 1
 
         return x, y
 
@@ -57,3 +61,26 @@ class Puyo:
         is_valid = int(y) < self.__y
         self.__y = y
         return is_valid
+
+    def update(self, time, event):
+
+        if not self.valid:
+            return
+
+        new_position = self.reflect_event(event)
+        is_updatable = 'self.logic.valid_coordinates(new_position) and ' \
+                       'not self.logic.already_exist(self, new_position)'
+
+        if new_position and eval(is_updatable):
+            self.position = new_position
+
+        if not self.falling(time):
+            return
+
+        new_position = self.__x, int(self.__y)
+        if eval(is_updatable):
+            self.position = new_position
+            return
+
+        self.__y = 0
+        self.__valid = False
