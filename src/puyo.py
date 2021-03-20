@@ -29,3 +29,23 @@ class Puyo:
     def position(self, coordinates):
         x, y = coordinates
         self.__x, self.__y = x, y
+
+    def reflect_event(self, event):
+        if isinstance(event, VoidEvent):
+            return self.position
+
+        x, y = self.position
+        if isinstance(event, MoveLeftEvent):
+            x -= 1
+        elif isinstance(event, MoveRightEvent):
+            x += 1
+        elif isinstance(event, MoveDownEvent):
+            y += 1
+        elif isinstance(event, LeftSpinEvent):
+            x -= 1
+            y += 1
+        elif isinstance(event, RightSpinEvent):
+            x += 1
+            y += 1
+
+        return x, y
