@@ -49,3 +49,11 @@ class Puyo:
             y += 1
 
         return x, y
+
+    def falling(self, time):
+        y = self.__y
+        y -= self.__speed * time
+
+        is_valid = int(y) < self.__y
+        self.__y = y
+        return is_valid
