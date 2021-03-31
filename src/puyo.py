@@ -1,8 +1,9 @@
 from uuid import uuid4
-
-from src.event import (LeftSpinEvent, MoveDownEvent, MoveLeftEvent,
+import copy
+from event import (LeftSpinEvent, MoveDownEvent, MoveLeftEvent,
                        MoveRightEvent, RightSpinEvent, VoidEvent)
-from src.logic import Logic
+from logic import Logic
+from timer import Timer
 
 WIDTH = 12
 HEIGHT = 20
@@ -13,11 +14,20 @@ class Puyo:
         self.__id = uuid4()
         self.__x = width // 2
         self.__y = height
-
+        self.__data = '◎'
         self.__valid = True
         self.__speed = 1
 
         self.__logic: Logic = logic
+
+
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def data(self):
+        return self.__data
 
     @property
     def logic(self):
@@ -26,6 +36,10 @@ class Puyo:
     @property
     def valid(self):
         return self.__valid
+
+    @valid.setter
+    def valid(self, value):
+        self.__valid = value
 
     @property
     def position(self):
@@ -56,16 +70,8 @@ class Puyo:
 
         return x, y
 
-    def falling(self, time):
-        y = self.__y
-        y -= self.__speed * time
-
-        is_valid = int(y) < self.__y
-        self.__y = y
-        return is_valid
 
     def update(self, time, event):
-
         if not self.valid:
             return
 
@@ -76,13 +82,15 @@ class Puyo:
         if new_position and eval(is_updatable):
             self.position = new_position
 
-        if not self.falling(time):
+        y = self.__y
+        y -= self.__speed * Timer.get_elapsed()
+        y = max(y, 0)
+
+        new_position = (self.__x, int(y))
+        if not eval(is_updatable):
+            self.valid = False
             return
 
-        new_position = self.__x, int(self.__y)
-        if eval(is_updatable):
-            self.position = new_position
-            return
-
-        self.__y = 0
-        self.__valid = False
+        self.__y = y
+        if int(self.__y) == 0:
+            self.valid = False

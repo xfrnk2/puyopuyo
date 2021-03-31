@@ -48,21 +48,6 @@ def test_event_reflect():
         assert result == expected
 
 
-def test_falling():
-    '''
-    :시간 경과에 따라 정상 낙하하는지 테스트:
-    '''
-    cases = (
-        FallingCase(time=0.1, expected=True),
-        FallingCase(time=0, expected=False)
-    )
-
-    for case in cases:
-        time, expected = case.time, case.expected
-        puyo = Puyo(Logic())
-        assert puyo.falling(time) == expected
-
-
 def test_update():
     '''
     :경과시간과 조작 이벤트에 따라 좌표값을 잘 반영하는지 테스트:
