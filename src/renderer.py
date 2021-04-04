@@ -23,7 +23,6 @@ class Renderer:
         self.__elapsed_time = 0.0
         self.__fps = 0
         self.__fps_count = 0
-        self.__field = None
 
     @property
     def elapsed_time(self):
@@ -45,13 +44,11 @@ class Renderer:
             self.__fps_count, self.__fps = 0, self.__fps_count
         return True
 
-    def render(self):
+    def render_begin(self):
         time = Timer.get_elapsed()
-        if not self.update(time):
-            return
+        return self.update(time)
 
-        print(self.__field)
+    def render(self, field):
+        clear()
+        field.render()
         print(self.__fps)
-
-    def set_field(self, field):
-        self.__field = field

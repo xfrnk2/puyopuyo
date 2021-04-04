@@ -1,10 +1,5 @@
-from timer import Timer
-from renderer import Renderer
+from game import Game
 
-Timer.init()
-a = Renderer()
-
-while True:
-    Timer.capture_time()
-
-    a.render()
+if __name__ == '__main__':
+    game = Game()
+    game.run()

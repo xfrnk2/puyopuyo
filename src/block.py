@@ -1,8 +1,7 @@
 from event import Event
-from game_object import GameObject
 
 
-class Block(GameObject):
+class Block:
     def __init__(self):
         self.__data = '□'
 

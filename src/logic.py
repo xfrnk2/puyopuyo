@@ -19,19 +19,26 @@ class Logic:
     def height(self):
         return self.__height
 
-    def update(self, puyo_objects):
+    def update(self):
         self.__logic = copy.deepcopy(self.__original_logic)
-        for puyo in puyo_objects:
-            x, y = puyo.position
-            self.__logic[self.__height - y - 1][x] = puyo
+
+    def set_game_objects(self, game_objects):
+        for game_object in game_objects:
+            x, y = game_object.position
+            self.__logic[self.__height - y - 1][x] = game_object
 
     def already_exist(self, puyo, position):
         try:
-            x, y = puyo.position
+            x, y = position
+            y = int(y)
             return self.__logic[self.__height - y - 1][x] and self.__logic[self.__height - y - 1][x] != puyo
         except IndexError:
             pass
 
     def valid_coordinates(self, position):
         x, y = position
+        y = int(y)
         return 0 <= y < self.__height and 0 <= x < self.__width
+
+    def is_updatable(self, new_position):
+        return self.valid_coordinates(new_position) and not self.already_exist(self, new_position)

@@ -1,43 +1,60 @@
-import copy
-import os
-from time import time
-from typing import TypedDict
-from uuid import uuid4
-
+# 목표 : 클론 코딩을 하지 말고, staticmethod 선언을 하지 않고 만들어 보기
 from event import EventManager, GameExitEvent
-from field import LogicField, RenderField
+from field import Field
+from logic import Logic
+from puyo import CurrentPuyo, Puyo
 from renderer import Renderer
 from timer import Timer
 
-# 목표 : 클론 코딩을 하지 말고, staticmethod 선언을 하지 않고 만들어 보기
-WIDTH = 6
-HEIGHT = 12
+WIDTH = 12
+HEIGHT = 20
 
 
 class Game:
     def __init__(self):
         Timer.init()
         self.__renderer = Renderer()
-        self.__logic = LogicField()
         self.__event = EventManager()
+        self.__game_objects = {}
+        self.__logic = Logic()
+        self.__current_puyo = None
+        self.__field = Field()
 
     def run(self):
-        is_running = True
-        while is_running:
-            is_running = self.__update()
+        is_continue = self.__update()
+        while is_continue:
+            is_continue = self.__update()
             self.__render()
 
     def __update(self):
         Timer.capture_time()
+        current_event = self.__event.get_event()
+        if isinstance(current_event, GameExitEvent):
+            return False
 
-        # current_event = self.__event.get_event()
-        # if isinstance(current_event, GameExitEvent):
-        #     return False
-        #
-        # self.__logic.update(current_event)
+        self.__logic.update()
+        self.__logic.set_game_objects(tuple(self.__game_objects.values()))
+
+        if self.__current_puyo:
+            self.__current_puyo.update(current_event)
+        # for game_object in self.__game_objects.values():
+        #     game_object.update(elapsed_time, current_event)
+
+        current_puyo = self.__current_puyo
+
+        if not current_puyo or not current_puyo.valid:
+            PuyoA, PuyoB = Puyo(self.__logic), Puyo(self.__logic)
+            PuyoA.position = (6, 19)
+
+            new_puyo = CurrentPuyo(PuyoA, PuyoB)
+            self.__game_objects[PuyoA.id] = PuyoA
+            self.__game_objects[PuyoB.id] = PuyoB
+
+            self.__current_puyo = new_puyo
+
+        self.__field.update(tuple(self.__game_objects.values()))
         return True
 
     def __render(self):
-        # field = self.__logic.renderer
-        # self.__renderer.update(field)
-        self.__renderer.render()
+        if self.__renderer.render_begin():
+            self.__renderer.render(self.__field)
