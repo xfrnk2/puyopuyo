@@ -1,10 +1,10 @@
+from enum import Enum
 from uuid import uuid4
-import copy
-from event import (Event, LeftSpinEvent, MoveDownEvent, MoveLeftEvent,
-                   MoveRightEvent, RightSpinEvent, VoidEvent, SpinEvent, MoveEvent)
+
+from event import (MoveDownEvent, MoveEvent, MoveLeftEvent, MoveRightEvent,
+                   RightSpinEvent, SpinEvent, VoidEvent)
 from logic import Logic
 from timer import Timer
-from enum import Enum
 
 WIDTH = 12
 HEIGHT = 20
@@ -101,7 +101,6 @@ class CurrentPuyo:
     def valid(self):
         return self.__valid
 
-
     def moving_update(self, event):
         target = self.__data[type(event)]
 
@@ -139,7 +138,6 @@ class CurrentPuyo:
         lower.position = add(lower.position, adding_values)
         upper.position = add(upper.position, adding_values)
 
-
     def spinning_update(self, event):
         current_direction = None  # main_puyo 기준에서의 sub_puyo의 방향
         if self.__sub_puyo.x == self.__main_puyo.x:
@@ -168,7 +166,6 @@ class CurrentPuyo:
         if self.__sub_puyo.is_updatable((x, y)):
             self.__sub_puyo.position = x, y
 
-
     def falling_update(self):
 
         self.__tick += self.__speed * Timer.get_elapsed()
@@ -176,7 +173,7 @@ class CurrentPuyo:
             return
 
         self.__tick -= 1.0
-        lower_puyo, upper_puyo = sorted([self.__main_puyo, self.__sub_puyo], key=lambda puyo: [puyo.y, puyo.x])  ##
+        lower_puyo, upper_puyo = sorted([self.__main_puyo, self.__sub_puyo], key=lambda puyo: [puyo.y, puyo.x])
 
         l_x, l_y = lower_puyo.position
         u_x, u_y = upper_puyo.position
