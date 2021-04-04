@@ -4,7 +4,7 @@ from event import (Event, LeftSpinEvent, MoveDownEvent, MoveLeftEvent,
                    MoveRightEvent, RightSpinEvent, VoidEvent, SpinEvent, MoveEvent)
 from logic import Logic
 from timer import Timer
-
+from enum import Enum
 
 WIDTH = 12
 HEIGHT = 20
@@ -63,3 +63,22 @@ class Puyo:
 
     def is_updatable(self, new_position):
         return self.logic.valid_coordinates(new_position) and not self.logic.already_exist(self, new_position)
+
+
+class CurrentPuyo:
+
+    def __init__(self, a, b):
+        self.__main_puyo = a
+        self.__sub_puyo = b
+        self.__tick = 1.0
+        self.__valid = True
+        self.__speed = 1
+        self.__data = {MoveDownEvent: (0, -1), MoveLeftEvent: (-1, 0), MoveRightEvent: (1, 0)}
+
+    @property
+    def main_puyo(self):
+        return self.__main_puyo
+
+    @property
+    def sub_puyo(self):
+        return self.__sub_puyo
