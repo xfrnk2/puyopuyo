@@ -97,6 +97,11 @@ class CurrentPuyo:
     def sub_puyo(self):
         return self.__sub_puyo
 
+    @property
+    def valid(self):
+        return self.__valid
+
+
     def moving_update(self, event):
         target = self.__data[type(event)]
 
@@ -162,3 +167,27 @@ class CurrentPuyo:
 
         if self.__sub_puyo.is_updatable((x, y)):
             self.__sub_puyo.position = x, y
+
+
+    def falling_update(self):
+
+        self.__tick += self.__speed * Timer.get_elapsed()
+        if self.__tick < 1.0:
+            return
+
+        self.__tick -= 1.0
+        lower_puyo, upper_puyo = sorted([self.__main_puyo, self.__sub_puyo], key=lambda puyo: [puyo.y, puyo.x])  ##
+
+        l_x, l_y = lower_puyo.position
+        u_x, u_y = upper_puyo.position
+
+        if l_x == u_x:
+            if not lower_puyo.is_updatable((l_x, l_y - 1)):
+                self.__valid = False
+                return
+        elif not (lower_puyo.is_updatable((l_x, l_y - 1)) and upper_puyo.is_updatable((u_x, u_y - 1))):
+            self.__valid = False
+            return
+
+        lower_puyo.falling()
+        upper_puyo.falling()
