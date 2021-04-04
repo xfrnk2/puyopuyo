@@ -82,3 +82,40 @@ class CurrentPuyo:
     @property
     def sub_puyo(self):
         return self.__sub_puyo
+
+    def moving_update(self, event):
+        target = self.__data[type(event)]
+
+        adding_values = [0, 0]
+        lower, upper = sorted([self.__main_puyo, self.__sub_puyo], key=lambda puyo: [puyo.y, puyo.x])
+        add = lambda x, y: (x[0] + y[0], x[1] + y[1])
+        pivot = lower
+        if isinstance(event, MoveRightEvent):
+            pivot = upper
+
+        pivot_valid = pivot.is_updatable(add(pivot.position, target))
+        valid = lower.is_updatable(add(lower.position, target)) and upper.is_updatable(add(upper.position, target))
+
+        if lower.x == upper.x:
+            if isinstance(event, MoveDownEvent):
+                if pivot_valid:
+                    adding_values = add(adding_values, target)
+                else:
+                    self.__valid = False
+                    return
+            elif valid:
+                adding_values = add(adding_values, target)
+
+        else:
+            if isinstance(event, MoveDownEvent):
+                if valid:
+                    adding_values = add(adding_values, target)
+                else:
+                    self.__valid = False
+                    return
+
+            elif pivot_valid:
+                adding_values = add(adding_values, target)
+
+        lower.position = add(lower.position, adding_values)
+        upper.position = add(upper.position, adding_values)
