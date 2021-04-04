@@ -191,3 +191,14 @@ class CurrentPuyo:
 
         lower_puyo.falling()
         upper_puyo.falling()
+
+    def update(self, event):
+
+        if isinstance(event, VoidEvent):
+            pass
+        elif isinstance(event, MoveEvent):
+            self.moving_update(event)
+        elif isinstance(event, SpinEvent):
+            self.spinning_update(event)
+
+        self.falling_update()
