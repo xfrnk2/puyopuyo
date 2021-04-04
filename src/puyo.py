@@ -10,6 +10,20 @@ WIDTH = 12
 HEIGHT = 20
 
 
+class Direction(Enum):
+    # 반시계방향(z회전) 변화값
+    EAST = -1, 1
+    WEST = 1, -1
+    NORTH = -1, -1
+    SOUTH = 1, 1
+
+    # 시계방향(x회전) 이동시 위 일련의 값들로부터 곱할 값
+    # EAST = 1, -1
+    # WEST = 1, -1
+    # NORTH = -1, 1
+    # SOUTH = -1, 1
+
+
 class Puyo:
     def __init__(self, logic, width=WIDTH, height=HEIGHT):
         self.__id = uuid4()
