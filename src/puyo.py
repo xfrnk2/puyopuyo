@@ -133,3 +133,32 @@ class CurrentPuyo:
 
         lower.position = add(lower.position, adding_values)
         upper.position = add(upper.position, adding_values)
+
+
+    def spinning_update(self, event):
+        current_direction = None  # main_puyo 기준에서의 sub_puyo의 방향
+        if self.__sub_puyo.x == self.__main_puyo.x:
+
+            if self.__sub_puyo.y < self.__main_puyo.y:
+                current_direction = Direction.SOUTH
+            else:
+                current_direction = Direction.NORTH
+        else:
+            if self.__sub_puyo.x < self.__main_puyo.x:
+                current_direction = Direction.WEST
+            else:
+                current_direction = Direction.EAST
+
+        x, y = self.__sub_puyo.position
+        m, n = current_direction.value
+
+        if isinstance(event, RightSpinEvent):
+            if current_direction.name == 'NORTH' or current_direction.name == 'SOUTH':
+                m = -m
+            else:
+                n = -n
+
+        x, y = x + m, y + n
+
+        if self.__sub_puyo.is_updatable((x, y)):
+            self.__sub_puyo.position = x, y
