@@ -6,28 +6,37 @@ from pynput.keyboard import Key, KeyCode, Listener
 class Event(ABC):
     pass
 
+class MoveEvent(Event):
+    pass
+
+class SpinEvent(Event):
+    pass
 
 class GameExitEvent(Event):
     pass
 
 
-class MoveLeftEvent(Event):
+class MoveLeftEvent(MoveEvent):
     pass
 
 
-class MoveRightEvent(Event):
+class MoveRightEvent(MoveEvent):
     pass
 
 
-class MoveDownEvent(Event):
+class MoveDownEvent(MoveEvent):
     pass
 
 
-class LeftSpinEvent(Event):
+class LeftSpinEvent(SpinEvent):
     pass
 
 
-class RightSpinEvent(Event):
+class RightSpinEvent(SpinEvent):
+    pass
+
+
+class RoundEvent(Event):
     pass
 
 
