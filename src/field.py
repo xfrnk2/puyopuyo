@@ -16,16 +16,14 @@ class Field:
     def update(self, puyo_objects):
         self.__field = copy.deepcopy(self.__original_field)
         for puyo in puyo_objects:
-            try:
-                x, y = puyo.position
-                data = puyo.data
-                self.__field[self.__height - y - 1][x].set(data)
-            except IndexError:
-                pass
+            x, y = puyo.position
+            data = puyo.data
+            self.__field[self.__height - y - 1][x].set(data)
 
     def render(self):
+
         for line in self.__field:
-            output = ''
+            output = []
             for block in line:
-                output += str(block)
-            print(output)
+                output.append(str(block))
+            print(''.join(output))
